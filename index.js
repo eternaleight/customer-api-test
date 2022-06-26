@@ -6,9 +6,9 @@ var PORT = 3001;
 app.listen(PORT, console.log("DBに接続中"));
 app.use(express.json());
 app.get("/", function (req, res) {
-    res.send("プログラミング");
+    res.send("customer api");
 });
-//お客様情報
+//カスタマー情報
 var customers = [
     { title: "tarou", id: 1 },
     { title: "jirou", id: 2 },
@@ -17,11 +17,11 @@ var customers = [
     { title: "gorou", id: 5 },
 ];
 //(Create(POST), Read(GET), Update(PUT), Delete(DELETE))
-//データ取得(GET)
+//データを取得(GET)
 app.get("/api/customers", function (req, res) {
     res.send(customers);
 });
-//カスタマー取得(GET)
+//カスタマーを取得(GET)
 app.get("/api/customers/:id", function (req, res) {
     var customer = customers.find(function (cus) { return cus.id === parseInt(req.params.id); });
     res.send(customer);
@@ -34,4 +34,17 @@ app.post("/api/customers", function (req, res) {
     };
     customers.push(customer);
     res.send(customers);
+});
+//データを更新(PUT)
+app.put("/api/customers/:id", function (req, res) {
+    var customer = customers.find(function (cus) { return cus.id === parseInt(req.params.id); });
+    customer.title = req.body.title;
+    res.send(customer);
+});
+//データを削除(DELETE)
+app["delete"]("/api/customers/:id", function (req, res) {
+    var customer = customers.find(function (cus) { return cus.id === parseInt(req.params.id); });
+    var index = customers.indexOf(customer);
+    customers.splice(index, 1);
+    res.send(customer);
 });
